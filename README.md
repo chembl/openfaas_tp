@@ -12,10 +12,10 @@ faas-cli build -f openfaas_tp.yml
 
 ## Push it to docker hub:
 ```
-docker push chembl/openfaas_tp
+docker push eloyfelix/openfaas_tp
 ```
 
 ## Deploy it to OpenFaaS
 ```
-faas-cli deploy -f openfaas_tp.yml --replace -e read_timeout=60, write_timeout=60
+faas-cli deploy -f openfaas_tp.yml
 ```
