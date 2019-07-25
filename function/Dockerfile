@@ -33,9 +33,9 @@ RUN bash /tmp/miniconda.sh -bfp $HOME/conda &&\
 ENV PATH $HOME/conda/envs/openfaas_tp/bin:$PATH
 
 # download target predictions and uncompress it
-RUN curl -O ftp://ftp.ebi.ac.uk/pub/databases/chembl/target_predictions/chembl_24_models.tar.gz && \
-    tar -zxf chembl_24_models.tar.gz && \
-    rm chembl_24_models.tar.gz
+RUN curl -O ftp://ftp.ebi.ac.uk/pub/databases/chembl/target_predictions/chembl_25_models.tar.gz && \
+    tar -zxf chembl_25_models.tar.gz && \
+    rm chembl_25_models.tar.gz
 
 COPY index.py .
 
