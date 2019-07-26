@@ -1,4 +1,4 @@
-FROM python:3-slim
+FROM debian:buster-slim
 
 RUN addgroup app && adduser app --system --ingroup app \
     && mkdir -p /opt/conda && chown -R app /opt/conda \
@@ -8,10 +8,8 @@ ENV HOME /home/app
 ENV PATH=$HOME/conda/bin:$PATH
 
 RUN apt-get update \
-    && apt-get -y install curl bzip2 libxrender1 libxext6 \
+    && apt-get install -y --no-install-recommends curl bzip2 libxrender1 libxext6 ca-certificates \
     && curl -sSL https://github.com/openfaas-incubator/of-watchdog/releases/download/0.5.4/of-watchdog > /usr/bin/fwatchdog \
-    && curl -sSL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o /tmp/miniconda.sh \
-    && chown app /tmp/miniconda.sh \
     && apt-get -qq -y autoremove \
     && apt-get autoclean \
     && rm -rf /var/lib/apt/lists/* /var/log/dpkg.log \
@@ -25,9 +23,12 @@ USER app
 COPY environment.yml /home/app/environment.yml
 
 # install conda and create environment
-RUN bash /tmp/miniconda.sh -bfp $HOME/conda &&\
+RUN curl -sSL https://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -o miniconda.sh && \
+    bash miniconda.sh -bfp $HOME/conda &&\
     conda update conda && \
-    conda env create -n openfaas_tp -f /home/app/environment.yml
+    conda env create -n openfaas_tp -f /home/app/environment.yml && \
+    rm -rf $HOME/conda/pkgs/* && \
+    rm miniconda.sh
 
 # activate env (add conda env bin to path)
 ENV PATH $HOME/conda/envs/openfaas_tp/bin:$PATH

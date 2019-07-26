@@ -11,7 +11,7 @@ from sklearn.externals import joblib
 function_root = os.environ.get("function_root")
 
 # load model
-model = joblib.load('/home/app/chembl_24/models/10uM/mNB_10uM_all.pkl')
+model = joblib.load('/home/app/chembl_25/models/10uM/mNB_10uM_all.pkl')
 classes = list(model.targets)
 
 
